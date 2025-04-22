@@ -147,6 +147,30 @@
             top: -10px;
         }
         
+        /* Style for the image inside the gift */
+        #giftImage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 80%;
+            max-height: 80%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            opacity: 0; /* Start fully transparent */
+            visibility: hidden; /* Start hidden */
+            transition: opacity 0.5s ease 0s, visibility 0s linear 0.5s; /* Adjust timing if needed */
+            z-index: 3; /* Make higher than ribbons (z-index: 2) */
+        }
+        
+        /* Style for when image should be visible */
+        #giftImage.visible {
+            opacity: 1;
+            visibility: visible;
+            /* Adjust transition timing if needed */
+            transition: opacity 0.5s ease 0s, visibility 0s linear 0s;
+        }
+        
         /* Envelope for message */
         .envelope-container {
             position: relative;
@@ -669,6 +693,7 @@
             <div class="gift">
                 <div class="gift-ribbon-vertical"></div>
                 <div class="gift-ribbon-horizontal"></div>
+                <img id="giftImage" src="Screenshot 2025-04-22 172242.png" alt="Hansika's Photo">
             </div>
             <div class="gift-lid"></div>
             <div class="gift-bow"></div>
@@ -742,6 +767,7 @@
             const finalMessage = document.getElementById('finalMessage');
             const heartsContainer = document.getElementById('hearts');
             const sprinkles = document.getElementById('sprinkles');
+            const giftImage = document.getElementById('giftImage');
             
             // Instructions
             const giftInstruction = document.getElementById('giftInstruction');
@@ -830,24 +856,51 @@
             
             // Gift click event with smooth fade
             gift.addEventListener('click', function() {
-                // First animate the lid of the gift
+                // Prevent multiple clicks during animation
+                if (gift.classList.contains('opening')) return;
+                gift.classList.add('opening');
+
+                // 1. Animate the lid opening (takes 0.5s)
                 giftLid.style.transform = 'rotateX(-180deg)';
-                
+
+                // 2. Reveal the image AFTER lid animation completes
                 setTimeout(function() {
-                    // Then fade out the entire gift and instruction
-                    giftBox.style.opacity = '0';
-                    giftLid.style.opacity = '0';
-                    giftBow.style.opacity = '0';
+                    if (giftImage) {
+                        giftImage.classList.add('visible'); // Add class to trigger fade-in
+                    }
+                }, 550); // Wait slightly longer than lid animation (500ms + 50ms buffer)
+
+                // 3. Wait longer before starting the fade-out sequence (relative to click time)
+                setTimeout(function() {
+                    // Start fading out all elements simultaneously
+                    giftBox.style.transition = 'opacity 0.5s ease';
+                    giftLid.style.transition = 'opacity 0.5s ease';
+                    giftBow.style.transition = 'opacity 0.5s ease';
+                    if (giftImage) {
+                        giftImage.style.transition = 'opacity 0.5s ease, visibility 0s linear 0.5s';
+                        giftImage.classList.remove('visible'); // Trigger fade out
+                    }
                     giftInstruction.style.opacity = '0';
-                    
+
+                    // Set final opacity to 0
+                    setTimeout(() => {
+                         giftBox.style.opacity = '0';
+                         giftLid.style.opacity = '0';
+                         giftBow.style.opacity = '0';
+                    }, 10);
+
+                    // 4. Hide elements and show next step AFTER fade out completes
                     setTimeout(function() {
                         gift.style.display = 'none';
                         giftInstruction.style.display = 'none';
                         envelopeContainer.style.display = 'block';
                         envelopeInstruction.style.display = 'block';
                         createConfetti();
-                    }, 500);
-                }, 500);
+                        gift.classList.remove('opening'); // Reset state
+                    }, 510); // Wait for fade out transition
+
+                }, 1500); // Adjusted delay: Lid opens(500ms) + Image fades in(500ms) + Visible time(~500ms)
+
             });
             
             // Envelope click event
