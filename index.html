@@ -159,15 +159,17 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             opacity: 0; /* Start fully transparent */
             visibility: hidden; /* Start hidden */
-            transition: opacity 0.5s ease 0s, visibility 0s linear 0.5s; /* Adjust timing if needed */
-            z-index: 3; /* Make higher than ribbons (z-index: 2) */
+            /* Fade-in transition: slightly longer, starts after lid moves */
+            transition: opacity 0.5s ease 0.3s, visibility 0s linear 0.3s;
+            z-index: 1; /* Below ribbons */
+            /* display: block; <- Not needed here, controlled by JS if necessary */
         }
         
         /* Style for when image should be visible */
         #giftImage.visible {
             opacity: 1;
             visibility: visible;
-            /* Adjust transition timing if needed */
+             /* Adjust transition timing if needed */
             transition: opacity 0.5s ease 0s, visibility 0s linear 0s;
         }
         
@@ -693,7 +695,7 @@
             <div class="gift">
                 <div class="gift-ribbon-vertical"></div>
                 <div class="gift-ribbon-horizontal"></div>
-                <img id="giftImage" src="https://github.com/GIGAC0DER/hansika-birthday/blob/main/Screenshot%202025-04-22%20172242.jpg?raw=true" alt="Hansika's Photo">
+                <img id="giftImage" src="https://raw.githubusercontent.com/GIGAC0DER/hansika-birthday/refs/heads/main/Screenshot%202025-04-22%20172242.jpg" alt="Hansika's Photo">
             </div>
             <div class="gift-lid"></div>
             <div class="gift-bow"></div>
@@ -860,46 +862,49 @@
                 if (gift.classList.contains('opening')) return;
                 gift.classList.add('opening');
 
-                // 1. Animate the lid opening (takes 0.5s)
+                // 1. Animate the lid opening
                 giftLid.style.transform = 'rotateX(-180deg)';
 
-                // 2. Reveal the image AFTER lid animation completes
+                // 2. Reveal the image shortly after lid starts moving
                 setTimeout(function() {
                     if (giftImage) {
                         giftImage.classList.add('visible'); // Add class to trigger fade-in
                     }
-                }, 550); // Wait slightly longer than lid animation (500ms + 50ms buffer)
+                }, 300); // Wait for lid to move a bit (was 200)
 
-                // 3. Wait longer before starting the fade-out sequence (relative to click time)
+                // 3. Wait longer before starting the fade-out sequence
                 setTimeout(function() {
                     // Start fading out all elements simultaneously
-                    giftBox.style.transition = 'opacity 0.5s ease';
+                    giftBox.style.transition = 'opacity 0.5s ease'; // Ensure transition is set
                     giftLid.style.transition = 'opacity 0.5s ease';
                     giftBow.style.transition = 'opacity 0.5s ease';
                     if (giftImage) {
-                        giftImage.style.transition = 'opacity 0.5s ease, visibility 0s linear 0.5s';
-                        giftImage.classList.remove('visible'); // Trigger fade out
+                         // Make image fade with the rest
+                        giftImage.style.transition = 'opacity 0.5s ease, visibility 0s linear 0.5s'; // Fade out opacity
+                        giftImage.classList.remove('visible'); // Trigger fade out by removing class
                     }
-                    giftInstruction.style.opacity = '0';
+                    giftInstruction.style.opacity = '0'; // Fade instruction
 
-                    // Set final opacity to 0
+                    // Set final opacity to 0 after a tiny delay to ensure transition applies
                     setTimeout(() => {
                          giftBox.style.opacity = '0';
                          giftLid.style.opacity = '0';
                          giftBow.style.opacity = '0';
+                         // Opacity handled by removing .visible class for image
                     }, 10);
+
 
                     // 4. Hide elements and show next step AFTER fade out completes
                     setTimeout(function() {
-                        gift.style.display = 'none';
+                        gift.style.display = 'none'; // Hide the whole container
                         giftInstruction.style.display = 'none';
                         envelopeContainer.style.display = 'block';
                         envelopeInstruction.style.display = 'block';
                         createConfetti();
                         gift.classList.remove('opening'); // Reset state
-                    }, 510); // Wait for fade out transition
+                    }, 510); // Wait slightly longer than the fade-out transition (500ms + buffer)
 
-                }, 1500); // Adjusted delay: Lid opens(500ms) + Image fades in(500ms) + Visible time(~500ms)
+                }, 1200); // Increased delay before fading out (was 700) - image visible longer
 
             });
             
