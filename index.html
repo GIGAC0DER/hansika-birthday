@@ -286,8 +286,10 @@
             position: relative;
             width: 240px;
             height: 120px;
-            margin: 0 auto;
+            margin: 40px auto 80px auto;
             cursor: pointer;
+            perspective: 1000px;
+            transform-style: preserve-3d;
         }
         
         .cake-bottom {
@@ -326,16 +328,6 @@
             height: 15px;
             background: linear-gradient(to right, #ff69b4, #ff1493, #ff69b4);
             top: -10px;
-            border-radius: 10px 10px 0 0;
-        }
-        
-        .frosting:before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 10px;
-            top: -5px;
-            background: repeating-radial-gradient(circle at 20px 0, #ff69b4, #ff69b4 5px, #ff1493 5px, #ff1493 10px);
             border-radius: 10px 10px 0 0;
         }
         
@@ -387,13 +379,15 @@
             width: 140px;
             height: 20px;
             background: linear-gradient(to right, #c0c0c0, #e0e0e0, #c0c0c0);
-            top: 50px;
-            right: -160px;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
             border-radius: 5px 0 0 5px;
             cursor: pointer;
-            transition: all 0.5s ease;
-            transform-origin: right center;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            transform-origin: center center;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 15;
         }
         
         .knife:before {
@@ -658,6 +652,12 @@
                 font-size: 1.5rem;
             }
         }
+
+        /* Style for knife moving up to cut */
+        .knife.cutting {
+            transform: translateX(-50%) translateY(-80px);
+            cursor: default;
+        }
     </style>
 </head>
 <body>
@@ -713,14 +713,14 @@
             <div class="knife" id="knife"></div>
         </div>
         
-        <div class="instruction" id="cakeInstruction">Click on Knife on Right side of cake!!</div>
+        <div class="instruction" id="cakeInstruction">Click the knife to cut!</div>
         
         <div class="final-message" id="finalMessage">Happy Birthday, Hansika!</div>
     </div>
     
     <div class="hearts" id="hearts"></div>
     
-    <div class="footer">Developed and Deployed By Anmol<br>with all his heart!</div>
+    <div class="footer">Developed By Anmol with all his heart!</div>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -900,7 +900,7 @@
                     envelopeInstruction.style.display = 'none';
                     cakeContainer.style.display = 'block';
                     cakeInstruction.style.display = 'block';
-                    cakeInstruction.textContent = "Click on Knife!!";
+                    cakeInstruction.textContent = "Click the knife to cut!";
                 }, 500);
             });
             
@@ -908,10 +908,8 @@
             knife.addEventListener('click', function() {
                 if (!knifeActive && !cakeSliced) {
                     knifeActive = true;
-                    knife.style.transform = 'translateX(-190px)';
-                    knife.style.cursor = 'default';
+                    knife.classList.add('cutting');
                     cakeInstruction.textContent = "Click on cake!!";
-                    cakeInstruction.style.display = 'block';
                 }
             });
             
@@ -920,107 +918,143 @@
                 if (knifeActive && !cakeSliced) {
                     cakeSliced = true;
                     knifeActive = false;
-                    
-                    // Hide instructions and knife smoothly
+
                     cakeInstruction.style.opacity = '0';
                     knife.style.opacity = '0';
-                    
+
                     setTimeout(function() {
                         cakeInstruction.style.display = 'none';
                         knife.style.display = 'none';
                     }, 500);
-                    
-                    // Hide flame and candle immediately
-                    if (flame) flame.style.display = 'none';
-                    if (candle) candle.style.display = 'none';
-                    
-                    // Select original cake parts
-                    const cakeTop = document.querySelector('.cake-top');
-                    const cakeMiddle = document.querySelector('.cake-middle');
-                    const cakeBottom = document.querySelector('.cake-bottom');
-                    const cakeSprinkles = document.getElementById('sprinkles');
-                    
-                    // Show cutting line briefly
-                    slice.style.display = 'block';
-                    
-                    // Fade out original cake visual components
-                    if (cakeTop) cakeTop.style.transition = 'opacity 0.5s ease';
-                    if (cakeMiddle) cakeMiddle.style.transition = 'opacity 0.5s ease';
-                    if (cakeBottom) cakeBottom.style.transition = 'opacity 0.5s ease';
-                    if (cakeSprinkles) cakeSprinkles.style.transition = 'opacity 0.5s ease';
-                    
-                    if (cakeTop) cakeTop.style.opacity = '0';
-                    if (cakeMiddle) cakeMiddle.style.opacity = '0';
-                    if (cakeBottom) cakeBottom.style.opacity = '0';
-                    if (cakeSprinkles) cakeSprinkles.style.opacity = '0';
-                    
-                    // Create the half elements after a short delay for fade out to start
+
+                    // --- Candle and Flame Handling ---
+                    const originalCandle = document.querySelector('.candle');
+                    const originalFlame = document.getElementById('flame');
+                    const clonedCandle = originalCandle ? originalCandle.cloneNode(true) : null;
+                    const clonedFlame = originalFlame ? originalFlame.cloneNode(true) : null;
+                    if (originalFlame) originalFlame.style.display = 'none';
+                    if (originalCandle) originalCandle.style.display = 'none';
+                    // --- End Candle Handling ---
+
+                    const originalCakeTop = document.querySelector('.cake-top');
+                    const originalCakeMiddle = document.querySelector('.cake-middle');
+                    const originalCakeBottom = document.querySelector('.cake-bottom');
+                    const originalSprinkles = document.getElementById('sprinkles');
+
+                    // Clone cake parts
+                    const leftTop = originalCakeTop.cloneNode(true);
+                    const leftMiddle = originalCakeMiddle.cloneNode(true);
+                    const leftBottom = originalCakeBottom.cloneNode(true);
+                    const leftSprinkles = originalSprinkles.cloneNode(true);
+
+                    const rightTop = originalCakeTop.cloneNode(true);
+                    const rightMiddle = originalCakeMiddle.cloneNode(true);
+                    const rightBottom = originalCakeBottom.cloneNode(true);
+                    const rightSprinkles = originalSprinkles.cloneNode(true);
+
+                    // Simplified style reset
+                    const resetStyles = (el) => {
+                        if (!el) return;
+                        el.style.transition = 'none';
+                        el.style.opacity = '1';
+                        el.style.display = 'block';
+                        el.style.position = 'absolute'; // Keep absolute
+                        // Remove other potentially conflicting resets like left, width, radius
+                    };
+
+                    // --- Create Left Half Container ---
+                    const leftHalf = document.createElement('div');
+                    leftHalf.style.position = 'absolute';
+                    leftHalf.style.width = '120px';
+                    leftHalf.style.height = '120px'; // Match cake height
+                    leftHalf.style.top = '80px'; // Position based on original cake top layer bottom
+                    leftHalf.style.left = '0';
+                    leftHalf.style.overflow = 'hidden'; // Clip contents
+                    leftHalf.style.transition = 'transform 1s ease';
+                    // Apply rounding to the container itself for clipping effect
+                    leftHalf.style.borderRadius = '10px 0 0 5px';
+                    leftHalf.style.boxShadow = '2px 5px 10px rgba(0,0,0,0.2)';
+                    leftHalf.style.zIndex = '10';
+                    leftHalf.style.transformStyle = 'preserve-3d'; // For potential 3d effects
+
+                    // Style and append cloned parts to left half
+                    [leftTop, leftMiddle, leftBottom, leftSprinkles].forEach(el => resetStyles(el));
+                    // Set correct dimensions and positions *relative to the half*
+                    if(leftTop){ leftTop.style.width = '240px'; leftTop.style.left = '0'; leftTop.style.bottom='80px'; leftTop.style.borderRadius = '5px 0 0 0'; leftHalf.appendChild(leftTop); }
+                    if(leftMiddle){ leftMiddle.style.width = '240px'; leftMiddle.style.left = '0'; leftMiddle.style.bottom='40px'; leftMiddle.style.borderRadius = '0'; leftHalf.appendChild(leftMiddle); }
+                    if(leftBottom){ leftBottom.style.width = '240px'; leftBottom.style.left = '0'; leftBottom.style.bottom='0px'; leftBottom.style.borderRadius = '0 0 0 5px'; leftHalf.appendChild(leftBottom); }
+                    if(leftSprinkles){ leftSprinkles.style.width = '240px'; leftSprinkles.style.left = '0'; leftSprinkles.style.top = '0'; leftHalf.appendChild(leftSprinkles); }
+
+
+                    // --- Add Cloned Candle/Flame to Left Half ---
+                    if (clonedCandle) {
+                        resetStyles(clonedCandle);
+                        // Original candle left: 116px. Half container width: 120px. Place near right edge.
+                        clonedCandle.style.left = '110px'; // Adjust if needed
+                        clonedCandle.style.top = '-35px'; // Keep original vertical offset from cake top
+                        clonedCandle.style.zIndex = '12'; // Above layers
+                        leftHalf.appendChild(clonedCandle);
+                    }
+                    if (clonedFlame) {
+                        resetStyles(clonedFlame);
+                        clonedFlame.style.left = '109px'; // Align with candle
+                        clonedFlame.style.top = '-55px';
+                        clonedFlame.style.animation = 'flicker 1s infinite alternate';
+                        clonedFlame.style.zIndex = '13'; // Above candle
+                        leftHalf.appendChild(clonedFlame);
+                    }
+                    // --- End Candle Adding ---
+
+
+                    // --- Create Right Half Container ---
+                    const rightHalf = document.createElement('div');
+                    rightHalf.style.position = 'absolute';
+                    rightHalf.style.width = '120px';
+                    rightHalf.style.height = '120px';
+                    rightHalf.style.top = '80px'; // Match left half top
+                    rightHalf.style.left = '120px';
+                    rightHalf.style.overflow = 'hidden';
+                    rightHalf.style.transition = 'transform 1s ease';
+                    rightHalf.style.borderRadius = '0 10px 5px 0';
+                    rightHalf.style.boxShadow = '-2px 5px 10px rgba(0,0,0,0.2)';
+                    rightHalf.style.zIndex = '9';
+                     rightHalf.style.transformStyle = 'preserve-3d';
+
+                    // Style and append cloned parts to right half
+                    [rightTop, rightMiddle, rightBottom, rightSprinkles].forEach(el => resetStyles(el));
+                     // Shift content left by 120px to show the right side
+                    if(rightTop){ rightTop.style.width = '240px'; rightTop.style.left = '-120px'; rightTop.style.bottom='80px'; rightTop.style.borderRadius = '0 5px 0 0'; rightHalf.appendChild(rightTop); }
+                    if(rightMiddle){ rightMiddle.style.width = '240px'; rightMiddle.style.left = '-120px'; rightMiddle.style.bottom='40px'; rightMiddle.style.borderRadius = '0'; rightHalf.appendChild(rightMiddle); }
+                    if(rightBottom){ rightBottom.style.width = '240px'; rightBottom.style.left = '-120px'; rightBottom.style.bottom='0px'; rightBottom.style.borderRadius = '0 0 5px 0'; rightHalf.appendChild(rightBottom); }
+                     if(rightSprinkles){ rightSprinkles.style.width = '240px'; rightSprinkles.style.left = '-120px'; rightSprinkles.style.top = '0'; rightHalf.appendChild(rightSprinkles); }
+
+
+                    // Hide original cake base elements
+                    originalCakeTop.style.display = 'none';
+                    originalCakeMiddle.style.display = 'none';
+                    originalCakeBottom.style.display = 'none';
+                    originalSprinkles.style.display = 'none';
+
+                    // Add the new halves to the main *cake container*
+                    cake.appendChild(leftHalf);
+                    cake.appendChild(rightHalf);
+
+                    // Animate the separation
                     setTimeout(function() {
-                        // Hide original parts and slice line
-                        if(cakeTop) cakeTop.style.display = 'none';
-                        if(cakeMiddle) cakeMiddle.style.display = 'none';
-                        if(cakeBottom) cakeBottom.style.display = 'none';
-                        if(cakeSprinkles) cakeSprinkles.style.display = 'none';
-                        slice.style.display = 'none';
-                        
-                        // Create completely independent left half
-                        const leftHalf = document.createElement('div');
-                        leftHalf.style.position = 'absolute';
-                        leftHalf.style.width = '120px';
-                        leftHalf.style.height = '120px';
-                        leftHalf.style.top = '0';
-                        leftHalf.style.left = '60px'; // Center position
-                        leftHalf.style.transition = 'transform 1s ease';
-                        leftHalf.style.boxShadow = '2px 5px 10px rgba(0,0,0,0.2)';
-                        leftHalf.style.zIndex = '10';
-                        
-                        // Create the complete left half structure
-                        leftHalf.innerHTML = `
-                            <div style="position: absolute; width: 120px; height: 40px; background: linear-gradient(to right, #ffffff, #f9f9f9); top: 0; left: 0; border-radius: 5px 0 0 0;"></div>
-                            <div style="position: absolute; width: 120px; height: 40px; background: linear-gradient(to right, #8B4513, #A0522D); top: 40px; left: 0;"></div>
-                            <div style="position: absolute; width: 120px; height: 40px; background: linear-gradient(to right, #e3a951, #f9e4b7); top: 80px; left: 0; border-radius: 0 0 0 5px;"></div>
-                            <div style="position: absolute; width: 120px; height: 15px; background: linear-gradient(to right, #ff69b4, #ff1493); top: -10px; left: 0; border-radius: 10px 0 0 0;"></div>
-                        `;
-                        
-                        // Create completely independent right half
-                        const rightHalf = document.createElement('div');
-                        rightHalf.style.position = 'absolute';
-                        rightHalf.style.width = '120px';
-                        rightHalf.style.height = '120px';
-                        rightHalf.style.top = '0';
-                        rightHalf.style.left = '60px'; // Same center position
-                        rightHalf.style.transition = 'transform 1s ease';
-                        rightHalf.style.boxShadow = '-2px 5px 10px rgba(0,0,0,0.2)';
-                        rightHalf.style.zIndex = '9';
-                        
-                        // Create the complete right half structure
-                        rightHalf.innerHTML = `
-                            <div style="position: absolute; width: 120px; height: 40px; background: linear-gradient(to right, #f9f9f9, #ffffff); top: 0; left: 0; border-radius: 0 5px 0 0;"></div>
-                            <div style="position: absolute; width: 120px; height: 40px; background: linear-gradient(to right, #A0522D, #8B4513); top: 40px; left: 0;"></div>
-                            <div style="position: absolute; width: 120px; height: 40px; background: linear-gradient(to right, #f9e4b7, #e3a951); top: 80px; left: 0; border-radius: 0 0 5px 0;"></div>
-                            <div style="position: absolute; width: 120px; height: 15px; background: linear-gradient(to right, #ff1493, #ff69b4); top: -10px; left: 0; border-radius: 0 10px 0 0;"></div>
-                        `;
-                        
-                        // Add the halves to the cake container
-                        cake.appendChild(leftHalf);
-                        cake.appendChild(rightHalf);
-                        
-                        // Animate the cake halves separation with more dramatic movement
+                        // Apply transform to the half containers
+                        leftHalf.style.transform = 'translateX(-40px) rotateY(-15deg) rotateX(5deg)'; // Add some 3D rotation
+                        rightHalf.style.transform = 'translateX(40px) rotateY(15deg) rotateX(5deg)'; // Add some 3D rotation
+
+                        // Show final message
                         setTimeout(function() {
-                            leftHalf.style.transform = 'translateX(-60px) rotate(-10deg)';
-                            rightHalf.style.transform = 'translateX(60px) rotate(10deg)';
-                            
-                            // Show final message after animation
+                            finalMessage.style.display = 'block';
                             setTimeout(function() {
-                                finalMessage.style.display = 'block';
-                                setTimeout(function() {
-                                    finalMessage.style.opacity = '1';
-                                    createConfetti();
-                                    createHearts();
-                                }, 100);
-                            }, 1000);
-                        }, 50);
-                    }, 300);
+                                finalMessage.style.opacity = '1';
+                                createConfetti();
+                                createHearts();
+                            }, 100);
+                        }, 1000);
+                    }, 50);
                 }
             });
         });
