@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Hansika!</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #ffcce6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 100%;
+            width: 500px;
+            position: relative;
+        }
+        
+        h1 {
+            color: #ff1493;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+        }
+        
+        .date {
+            color: #ff69b4;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        
+        /* Instructions */
+        .instruction {
+            color: #000;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            animation: pulse 1.5s infinite alternate;
+            transition: opacity 0.5s ease;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+        
+        /* Improved Gift Box */
+        .gift-container {
+            margin: 40px auto;
+            cursor: pointer;
+            position: relative;
+            width: 150px;
+            height: 150px;
+            perspective: 1000px;
+        }
+        
+        .gift {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+        
+        .gift-ribbon-vertical {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 150px;
+            background-color: #ff1493;
+            left: 60px;
+            top: 0;
+            z-index: 2;
+        }
+        
+        .gift-ribbon-horizontal {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 30px;
+            background-color: #ff1493;
+            left: 0;
+            top: 60px;
+            z-index: 2;
+        }
+        
+        .gift-lid {
+            width: 150px;
+            height: 30px;
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 10px 10px 0 0;
+            transform-origin: bottom;
+            transition: transform 0.5s ease;
+            box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.1);
+            z-index: 3;
+        }
+        
+        .gift-bow {
+            width: 50px;
+            height: 30px;
+            background-color: #ff1493;
+            position: absolute;
+            border-radius: 50%;
+            top: -15px;
+            left: 50px;
+            z-index: 4;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gift-bow:before, .gift-bow:after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 30px;
+            background-color: #ff1493;
+            border-radius: 50%;
+        }
+        
+        .gift-bow:before {
+            transform: rotate(60deg);
+            left: -10px;
+            top: -10px;
+        }
+        
+        .gift-bow:after {
+            transform: rotate(-60deg);
+            left: 10px;
+            top: -10px;
+        }
+        
+        /* Envelope for message */
+        .envelope-container {
+            position: relative;
+            width: 280px;
+            height: 180px;
+            margin: 40px auto;
+            perspective: 1000px;
+            display: none;
+        }
+        
+        .envelope {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #f8f8f8;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform-style: preserve-3d;
+            transform-origin: center bottom;
+            transition: transform 1s ease;
+            cursor: pointer;
+        }
+        
+        .envelope:before {
+            content: '';
+            position: absolute;
+            width: 280px;
+            height: 180px;
+            background-color: #e8e8e8;
+            clip-path: polygon(0 0, 100% 0, 50% 50%);
+            top: 0;
+            left: 0;
+        }
+        
+        .envelope:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-bottom: 90px solid #f1f1f1;
+            top: -90px;
+            left: 0;
+            transform-origin: bottom;
+            transform: rotateX(180deg);
+            transition: transform 0.5s ease 0.5s;
+        }
+        
+        .envelope-open:after {
+            transform: rotateX(0deg);
+        }
+        
+        .envelope-open {
+            transform: rotateX(-20deg);
+        }
+        
+        .letter-container {
+            position: absolute;
+            width: 240px;
+            height: 160px;
+            top: 10px;
+            left: 20px;
+            z-index: 1;
+        }
+        
+        .letter {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 3px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s ease;
+            transform: translateY(0);
+            font-size: 15px;
+            color: #ff1493;
+            overflow-y: auto;
+            text-align: left;
+        }
+        
+        .envelope-open .letter-container {
+            z-index: 3;
+        }
+        
+        .envelope-open .letter-container .letter {
+            transform: translateY(-120px);
+        }
+        
+        .heart-seal {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #ff1493;
+            transform: rotate(45deg);
+            top: 50px;
+            left: 125px;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+        
+        .heart-seal:before, .heart-seal:after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #ff1493;
+            border-radius: 50%;
+        }
+        
+        .heart-seal:before {
+            top: -15px;
+            left: 0;
+        }
+        
+        .heart-seal:after {
+            top: 0;
+            left: -15px;
+        }
+        
+        .envelope-open .heart-seal {
+            opacity: 0;
+        }
+        
+        /* Realistic cake and knife */
+        .cake-container {
+            display: none;
+            position: relative;
+            margin: 40px auto;
+            width: 280px;
+            height: 200px;
+        }
+        
+        .cake {
+            position: relative;
+            width: 240px;
+            height: 120px;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+        
+        .cake-bottom {
+            position: absolute;
+            width: 240px;
+            height: 40px;
+            background: linear-gradient(to right, #e3a951, #f9e4b7, #e3a951);
+            bottom: 0;
+            border-radius: 10px 10px 5px 5px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .cake-middle {
+            position: absolute;
+            width: 240px;
+            height: 40px;
+            background: linear-gradient(to right, #8B4513, #A0522D, #8B4513);
+            bottom: 40px;
+            border-radius: 5px;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .cake-top {
+            position: absolute;
+            width: 240px;
+            height: 40px;
+            background: linear-gradient(to right, #ffffff, #f9f9f9, #ffffff);
+            bottom: 80px;
+            border-radius: 5px 5px 0 0;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .frosting {
+            position: absolute;
+            width: 100%;
+            height: 15px;
+            background: linear-gradient(to right, #ff69b4, #ff1493, #ff69b4);
+            top: -10px;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .frosting:before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 10px;
+            top: -5px;
+            background: repeating-radial-gradient(circle at 20px 0, #ff69b4, #ff69b4 5px, #ff1493 5px, #ff1493 10px);
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .sprinkles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+        }
+        
+        .sprinkle {
+            position: absolute;
+            width: 5px;
+            height: 2px;
+            background-color: #ffd700;
+            border-radius: 2px;
+        }
+        
+        .candle {
+            position: absolute;
+            width: 8px;
+            height: 25px;
+            background: linear-gradient(to right, #ffd700, #ffeb3b, #ffd700);
+            top: -35px;
+            left: 116px;
+            border-radius: 2px;
+        }
+        
+        .flame {
+            position: absolute;
+            width: 10px;
+            height: 20px;
+            background: radial-gradient(ellipse at center, #ffff00 0%, #ff6600 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            top: -55px;
+            left: 115px;
+            transform-origin: center bottom;
+            animation: flicker 1s infinite alternate;
+            box-shadow: 0 0 10px #ff6600, 0 0 20px #ff6600, 0 0 30px #ff6600;
+        }
+        
+        @keyframes flicker {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.05, 1.15); opacity: 0.8; }
+        }
+        
+        .knife {
+            position: absolute;
+            width: 140px;
+            height: 20px;
+            background: linear-gradient(to right, #c0c0c0, #e0e0e0, #c0c0c0);
+            top: 50px;
+            right: -160px;
+            border-radius: 5px 0 0 5px;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            transform-origin: right center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .knife:before {
+            content: '';
+            position: absolute;
+            width: 140px;
+            height: 2px;
+            background: linear-gradient(to right, #a0a0a0, #d0d0d0);
+            top: 9px;
+            left: 0px;
+        }
+        
+        .knife:after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 40px;
+            background: linear-gradient(to right, #8b4513, #a0522d);
+            right: -30px;
+            top: -10px;
+            border-radius: 0 5px 5px 0;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .slice {
+            position: absolute;
+            width: 0;
+            height: 120px;
+            border-left: 5px dashed rgba(0, 0, 0, 0.3);
+            top: 0;
+            left: 50%;
+            display: none;
+        }
+        
+        .button {
+            background: linear-gradient(to right, #ff1493, #ff69b4);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            opacity: 0;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .button:disabled {
+            background: linear-gradient(to right, #999, #aaa);
+            cursor: not-allowed;
+            opacity: 0.5;
+            transform: scale(1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            animation: fall 5s linear forwards;
+            opacity: 0;
+            z-index: 9999;
+        }
+        
+        @keyframes fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+        
+        .final-message {  
+            font-size: 2.5rem;
+            color: #ff1493;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin: 30px 0;
+            opacity: 0;
+            transition: opacity 1s ease;
+            display: none;
+        }
+        
+        .hearts {
+            position: absolute;
+            pointer-events: none;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+        }
+        
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ff1493;
+            transform: rotate(45deg);
+            opacity: 0;
+        }
+        
+        .heart:before, .heart:after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ff1493;
+            border-radius: 50%;
+        }
+        
+        .heart:before {
+            top: -10px;
+            left: 0;
+        }
+        
+        .heart:after {
+            top: 0;
+            left: -10px;
+        }
+        
+        @keyframes floatHeart {
+            0% { transform: translateY(0) rotate(45deg) scale(1); opacity: 1; }
+            100% { transform: translateY(-100px) rotate(45deg) scale(0); opacity: 0; }
+        }
+        
+        /* Progress bar for letter scrolling */
+        .scroll-progress {
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #ff1493;
+            transition: width 0.3s;
+        }
+        
+        /* Footer styling */
+        .footer {
+            margin-top: 30px;
+            padding: 15px;
+            font-size: 1rem;
+            color: #ff69b4;
+            text-align: center;
+            font-style: italic;
+            position: relative;
+            width: 100%;
+        }
+
+        .footer:before {
+            content: '❤️';
+            margin-right: 5px;
+        }
+
+        .footer:after {
+            content: '❤️';
+            margin-left: 5px;
+        }
+        
+        /* Mobile responsiveness */
+        @media screen and (max-width: 500px) {
+            h1 {
+                font-size: 1.8rem;
+                margin-top: 10px;
+            }
+            
+            .date {
+                font-size: 1.1rem;
+                margin-bottom: 15px;
+            }
+            
+            .gift-container {
+                transform: scale(0.85);
+                margin: 25px auto;
+            }
+            
+            .envelope-container {
+                width: 90%;
+                max-width: 250px;
+                height: 160px;
+                margin: 25px auto;
+            }
+            
+            .envelope:before {
+                width: 100%;
+                height: 100%;
+            }
+            
+            .envelope:after {
+                border-left: 125px solid transparent;
+                border-right: 125px solid transparent;
+                border-bottom: 80px solid #f1f1f1;
+                top: -80px;
+            }
+            
+            .letter-container {
+                width: calc(100% - 40px);
+                height: calc(100% - 20px);
+            }
+            
+            .cake-container {
+                transform: scale(0.85);
+                margin: 25px auto;
+            }
+            
+            .final-message {
+                font-size: 1.8rem;
+                margin: 20px 0;
+            }
+            
+            .instruction {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+
+            .button {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+
+            .footer {
+                font-size: 0.9rem;
+                margin-top: 20px;
+            }
+        }
+
+        /* Extra small devices */
+        @media screen and (max-width: 350px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+            
+            .gift-container, .cake-container {
+                transform: scale(0.75);
+                margin: 15px auto;
+            }
+            
+            .envelope-container {
+                width: 85%;
+                height: 150px;
+            }
+            
+            .letter {
+                font-size: 13px;
+                padding: 15px;
+            }
+            
+            .final-message {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Happy Birthday!</h1>
+        <div class="date">May 10th</div>
+        
+        <div class="gift-container" id="gift">
+            <div class="gift">
+                <div class="gift-ribbon-vertical"></div>
+                <div class="gift-ribbon-horizontal"></div>
+            </div>
+            <div class="gift-lid"></div>
+            <div class="gift-bow"></div>
+        </div>
+        
+        <div class="instruction" id="giftInstruction">Click the gift!!</div>
+        
+        <div class="envelope-container" id="envelopeContainer">
+            <div class="envelope" id="envelope">
+                <div class="heart-seal"></div>
+                <div class="letter-container">
+                    <div class="letter" id="letter">
+                        Dear Hansika,<br><br>
+                        On your special day, I want to wish you all the happiness in the world! May your birthday be filled with laughter, love, and wonderful memories. You deserve all the best that life has to offer!<br><br>
+                        May this new year of your life bring you endless joy, success in everything you pursue, and beautiful moments to cherish forever. Remember that you are amazing and loved by so many people around you!<br><br>
+                        Wishing you a fantastic birthday celebration and an even better year ahead. May all your dreams and wishes come true!<br><br>
+                        Happy Birthday!
+                    </div>
+                    <div class="scroll-progress" id="scrollProgress">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instruction" id="envelopeInstruction">Click the envelope!!</div>
+        
+        <button class="button" id="cakeButton" disabled>Let's have cake!</button>
+        
+        <div class="cake-container" id="cakeContainer">
+            <div class="cake" id="cake">
+                <div class="cake-top">
+                    <div class="frosting"></div>
+                </div>
+                <div class="cake-middle"></div>
+                <div class="cake-bottom"></div>
+                <div class="candle"></div>
+                <div class="flame" id="flame"></div>
+                <div class="sprinkles" id="sprinkles"></div>
+                <div class="slice" id="slice"></div>
+            </div>
+            <div class="knife" id="knife"></div>
+        </div>
+        
+        <div class="instruction" id="cakeInstruction">Click on Knife!!</div>
+        
+        <div class="final-message" id="finalMessage">Happy Birthday, Hansika!</div>
+    </div>
+    
+    <div class="hearts" id="hearts"></div>
+    
+    <div class="footer">Developed By Anmol with all his heart!</div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const gift = document.getElementById('gift');
+            const giftLid = document.querySelector('.gift-lid');
+            const giftBox = gift.querySelector('.gift');
+            const giftBow = gift.querySelector('.gift-bow');
+            const envelopeContainer = document.getElementById('envelopeContainer');
+            const envelope = document.getElementById('envelope');
+            const letter = document.getElementById('letter');
+            const cakeButton = document.getElementById('cakeButton');
+            const cakeContainer = document.getElementById('cakeContainer');
+            const knife = document.getElementById('knife');
+            const cake = document.getElementById('cake');
+            const slice = document.getElementById('slice');
+            const flame = document.getElementById('flame');
+            const candle = document.querySelector('.candle');
+            const finalMessage = document.getElementById('finalMessage');
+            const heartsContainer = document.getElementById('hearts');
+            const sprinkles = document.getElementById('sprinkles');
+            
+            // Instructions
+            const giftInstruction = document.getElementById('giftInstruction');
+            const envelopeInstruction = document.getElementById('envelopeInstruction');
+            const cakeInstruction = document.getElementById('cakeInstruction');
+            
+            // Scroll progress
+            const scrollProgress = document.getElementById('scrollProgress');
+            const progressBar = document.getElementById('progressBar');
+            
+            let knifeActive = false;
+            let cakeSliced = false;
+            let envelopeOpened = false;
+            let hasScrolledToEnd = false;
+            
+            // Hide elements and instructions initially
+            envelopeContainer.style.display = 'none';
+            envelopeInstruction.style.display = 'none';
+            cakeButton.style.display = 'none';
+            cakeButton.style.opacity = '0';
+            cakeContainer.style.display = 'none';
+            cakeInstruction.style.display = 'none';
+            finalMessage.style.display = 'none';
+            
+            // Add sprinkles
+            function createSprinkles() {
+                const colors = ['#ffd700', '#00ff00', '#ff6600', '#00ffff', '#ee82ee'];
+                for (let i = 0; i < 30; i++) {
+                    const sprinkle = document.createElement('div');
+                    sprinkle.className = 'sprinkle';
+                    sprinkle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    sprinkle.style.left = Math.random() * 230 + 'px';
+                    sprinkle.style.top = Math.random() * 35 + 'px';
+                    sprinkle.style.transform = 'rotate(' + Math.random() * 90 + 'deg)';
+                    sprinkles.appendChild(sprinkle);
+                }
+            }
+            
+            createSprinkles();
+            
+            // Create confetti function
+            function createConfetti() {
+                const colors = ['#ff1493', '#ff69b4', '#ffcce6', '#ffd700', '#ff6600', '#ee82ee'];
+                
+                for (let i = 0; i < 50; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.width = Math.random() * 15 + 5 + 'px';
+                    confetti.style.height = Math.random() * 15 + 5 + 'px';
+                    confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    confetti.style.animationDelay = Math.random() * 2 + 's';
+                    document.body.appendChild(confetti);
+                    
+                    // Remove confetti after animation
+                    setTimeout(function() {
+                        if (confetti.parentNode) {
+                            confetti.remove();
+                        }
+                    }, 5000);
+                }
+            }
+            
+            // Create hearts function
+            function createHearts() {
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(function() {
+                        const heart = document.createElement('div');
+                        heart.className = 'heart';
+                        heart.style.left = Math.random() * 80 + 10 + '%';
+                        heart.style.bottom = '0';
+                        heart.style.opacity = '1';
+                        heart.style.animation = 'floatHeart ' + (Math.random() * 3 + 2) + 's ease-in forwards';
+                        heartsContainer.appendChild(heart);
+                        
+                        // Remove heart after animation
+                        setTimeout(function() {
+                            if (heart.parentNode) {
+                                heart.remove();
+                            }
+                        }, 5000);
+                    }, i * 200);
+                }
+            }
+            
+            // Gift click event with smooth fade
+            gift.addEventListener('click', function() {
+                // First animate the lid of the gift
+                giftLid.style.transform = 'rotateX(-180deg)';
+                
+                setTimeout(function() {
+                    // Then fade out the entire gift and instruction
+                    giftBox.style.opacity = '0';
+                    giftLid.style.opacity = '0';
+                    giftBow.style.opacity = '0';
+                    giftInstruction.style.opacity = '0';
+                    
+                    setTimeout(function() {
+                        gift.style.display = 'none';
+                        giftInstruction.style.display = 'none';
+                        envelopeContainer.style.display = 'block';
+                        envelopeInstruction.style.display = 'block';
+                        createConfetti();
+                    }, 500);
+                }, 500);
+            });
+            
+            // Envelope click event
+            envelope.addEventListener('click', function() {
+                if (!envelopeOpened) {
+                    envelope.classList.add('envelope-open');
+                    envelopeOpened = true;
+                    envelopeInstruction.textContent = "Scroll to read the message!";
+                    envelopeInstruction.style.display = 'block';
+                    
+                    // Show scroll progress bar
+                    scrollProgress.style.display = 'block';
+                    
+                    // Show cake button but keep it disabled until scrolled
+                    setTimeout(function() {
+                        cakeButton.style.display = 'inline-block';
+                        setTimeout(function() {
+                            cakeButton.style.opacity = '1';
+                        }, 50);
+                    }, 1000);
+                }
+            });
+            
+            // Letter scroll event
+            letter.addEventListener('scroll', function() {
+                const scrollPosition = letter.scrollTop;
+                const maxScroll = letter.scrollHeight - letter.clientHeight;
+                const scrollPercentage = maxScroll > 0 ? (scrollPosition / maxScroll) * 100 : 100;
+                
+                // Update progress bar
+                progressBar.style.width = scrollPercentage + '%';
+                
+                // Enable button when scrolled near the bottom
+                if (scrollPercentage > 95 && !hasScrolledToEnd) {
+                    hasScrolledToEnd = true;
+                    cakeButton.disabled = false;
+                    envelopeInstruction.textContent = "Now click 'Let's have cake!'";
+                    envelopeInstruction.style.display = 'block';
+                }
+            });
+            
+            // Cake button click event
+            cakeButton.addEventListener('click', function() {
+                cakeButton.style.opacity = '0';
+                envelopeInstruction.style.opacity = '0';
+                
+                setTimeout(function() {
+                    envelopeContainer.style.display = 'none';
+                    cakeButton.style.display = 'none';
+                    envelopeInstruction.style.display = 'none';
+                    cakeContainer.style.display = 'block';
+                    cakeInstruction.style.display = 'block';
+                    cakeInstruction.textContent = "Click on Knife!!";
+                }, 500);
+            });
+            
+            // Knife click event
+            knife.addEventListener('click', function() {
+                if (!knifeActive && !cakeSliced) {
+                    knifeActive = true;
+                    knife.style.transform = 'translateX(-190px)';
+                    knife.style.cursor = 'default';
+                    cakeInstruction.textContent = "Click on cake!!";
+                    cakeInstruction.style.display = 'block';
+                }
+            });
+            
+            // Cake click event
+            cake.addEventListener('click', function() {
+                if (knifeActive && !cakeSliced) {
+                    cakeSliced = true;
+                    knifeActive = false;
+                    
+                    // Hide instructions and knife smoothly
+                    cakeInstruction.style.opacity = '0';
+                    knife.style.opacity = '0';
+                    
+                    setTimeout(function() {
+                        cakeInstruction.style.display = 'none';
+                        knife.style.display = 'none';
+                    }, 500);
+                    
+                    // Hide flame and candle immediately
+                    if (flame) flame.style.display = 'none';
+                    if (candle) candle.style.display = 'none';
+                    
+                    // Select original cake parts
+                    const cakeTop = document.querySelector('.cake-top');
+                    const cakeMiddle = document.querySelector('.cake-middle');
+                    const cakeBottom = document.querySelector('.cake-bottom');
+                    const cakeSprinkles = document.getElementById('sprinkles');
+                    
+                    // Show cutting line briefly
+                    slice.style.display = 'block';
+                    
+                    // Fade out original cake visual components
+                    if (cakeTop) cakeTop.style.transition = 'opacity 0.5s ease';
+                    if (cakeMiddle) cakeMiddle.style.transition = 'opacity 0.5s ease';
+                    if (cakeBottom) cakeBottom.style.transition = 'opacity 0.5s ease';
+                    if (cakeSprinkles) cakeSprinkles.style.transition = 'opacity 0.5s ease';
+                    
+                    if (cakeTop) cakeTop.style.opacity = '0';
+                    if (cakeMiddle) cakeMiddle.style.opacity = '0';
+                    if (cakeBottom) cakeBottom.style.opacity = '0';
+                    if (cakeSprinkles) cakeSprinkles.style.opacity = '0';
+                    
+                    // Create the half elements after a short delay for fade out to start
+                    setTimeout(function() {
+                        // Hide original parts and slice line
+                        if(cakeTop) cakeTop.style.display = 'none';
+                        if(cakeMiddle) cakeMiddle.style.display = 'none';
+                        if(cakeBottom) cakeBottom.style.display = 'none';
+                        if(cakeSprinkles) cakeSprinkles.style.display = 'none';
+                        slice.style.display = 'none';
+                        
+                        // Create completely independent left half
+                        const leftHalf = document.createElement('div');
+                        leftHalf.style.position = 'absolute';
+                        leftHalf.style.width = '120px';
+                        leftHalf.style.height = '120px';
+                        leftHalf.style.top = '0';
+                        leftHalf.style.left = '60px'; // Center position
+                        leftHalf.style.transition = 'transform 1s ease';
+                        leftHalf.style.boxShadow = '2px 5px 10px rgba(0,0,0,0.2)';
+                        leftHalf.style.zIndex = '10';
+                        
+                        // Create the complete left half structure
+                        leftHalf.innerHTML = `
+                            <div style="position: absolute; width: 120px; height: 40px; background: linear-gradient(to right, #ffffff, #f9f9f9); top: 0; left: 0; border-radius: 5px 0 0 0;"></div>
+                            <div style="position: absolute; width: 120px; height: 40px; background: linear-gradient(to right, #8B4513, #A0522D); top: 40px; left: 0;"></div>
+                            <div style="position: absolute; width: 120px; height: 40px; background: linear-gradient(to right, #e3a951, #f9e4b7); top: 80px; left: 0; border-radius: 0 0 0 5px;"></div>
+                            <div style="position: absolute; width: 120px; height: 15px; background: linear-gradient(to right, #ff69b4, #ff1493); top: -10px; left: 0; border-radius: 10px 0 0 0;"></div>
+                        `;
+                        
+                        // Create completely independent right half
+                        const rightHalf = document.createElement('div');
+                        rightHalf.style.position = 'absolute';
+                        rightHalf.style.width = '120px';
+                        rightHalf.style.height = '120px';
+                        rightHalf.style.top = '0';
+                        rightHalf.style.left = '60px'; // Same center position
+                        rightHalf.style.transition = 'transform 1s ease';
+                        rightHalf.style.boxShadow = '-2px 5px 10px rgba(0,0,0,0.2)';
+                        rightHalf.style.zIndex = '9';
+                        
+                        // Create the complete right half structure
+                        rightHalf.innerHTML = `
+                            <div style="position: absolute; width: 120px; height: 40px; background: linear-gradient(to right, #f9f9f9, #ffffff); top: 0; left: 0; border-radius: 0 5px 0 0;"></div>
+                            <div style="position: absolute; width: 120px; height: 40px; background: linear-gradient(to right, #A0522D, #8B4513); top: 40px; left: 0;"></div>
+                            <div style="position: absolute; width: 120px; height: 40px; background: linear-gradient(to right, #f9e4b7, #e3a951); top: 80px; left: 0; border-radius: 0 0 5px 0;"></div>
+                            <div style="position: absolute; width: 120px; height: 15px; background: linear-gradient(to right, #ff1493, #ff69b4); top: -10px; left: 0; border-radius: 0 10px 0 0;"></div>
+                        `;
+                        
+                        // Add the halves to the cake container
+                        cake.appendChild(leftHalf);
+                        cake.appendChild(rightHalf);
+                        
+                        // Animate the cake halves separation with more dramatic movement
+                        setTimeout(function() {
+                            leftHalf.style.transform = 'translateX(-60px) rotate(-10deg)';
+                            rightHalf.style.transform = 'translateX(60px) rotate(10deg)';
+                            
+                            // Show final message after animation
+                            setTimeout(function() {
+                                finalMessage.style.display = 'block';
+                                setTimeout(function() {
+                                    finalMessage.style.opacity = '1';
+                                    createConfetti();
+                                    createHearts();
+                                }, 100);
+                            }, 1000);
+                        }, 50);
+                    }, 300);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
